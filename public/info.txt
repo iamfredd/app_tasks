@@ -1,0 +1,1 @@
+/assets -> contiene todas las librerias y ficheros estaticos que utilizaremos en la aplicacion

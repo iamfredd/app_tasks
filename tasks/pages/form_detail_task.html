@@ -1,0 +1,67 @@
+{% extends '_base.html' %}
+{% load form_tags %}
+
+{% block content %}
+<article class="container">
+  <header class="my-4">
+    <h1>{{ task.title }}</h1>
+  </header>
+
+  {% if error %}
+  <div class="alert alert-danger" role="alert">{{ error }}</div>
+  {% endif %}
+
+  <section>
+    
+    <form method="POST" class="mb-4">
+      {% csrf_token %}
+      <fieldset class="mb-3 border rounded p-2">
+        <!-- {{ form.as_p }} -->
+        <legend class="">Detalle de la tarea</legend>
+        <div class="mb-3">
+          <label for="titulo" class="form-label">Título</label>
+          {{ form.titulo|add_class:"form-control" }}
+          <div class="invalid-feedback">Por favor, ingresa un título.</div>
+        </div>
+
+        <div class="mb-3">
+          <label for="descripcion" class="form-label">Descripción</label>
+          {{ form.descripcion|add_class:"form-control" }}
+          <div class="invalid-feedback">
+            Por favor, ingresa una descripción.
+          </div>
+        </div>
+
+        <div class="form-check mb-3">
+          <label for="importante" class="form-check-label">
+            {{ form.importante|add_class:"form-check-input" }}
+            <i class="fa-solid fa-star text-warning"></i> Importante
+          </label>
+        </div>
+ 
+        {% if task.completada is False %}
+        <hr class="my-4" />
+        <button type="submit" class="btn btn-primary"><i class="fa-solid fa-floppy-disk"></i> Editar</button>
+        {% endif %}
+      
+      </fieldset>
+    </form>
+  </section>
+
+  <section>
+    <div class="btn-group mb-2" role="group" aria-label="Task Actions">
+      {% if  task.completada is False  %}
+      <form action="{% url 'complete_task' task.id %}" method="POST" class="mx-2">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-success"><i class="fa-regular fa-circle-check"></i> Completar</button>
+      </form>
+      {% endif %}
+    
+      <form action="{% url 'delete_task' task.id %}" method="POST" class="">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger"><i class="fa-solid fa-trash-can"></i> Eliminar</button>
+      </form>
+    </div>
+  </section>
+</article>
+{% endblock %}

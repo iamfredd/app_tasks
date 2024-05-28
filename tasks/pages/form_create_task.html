@@ -1,0 +1,45 @@
+{% extends '_base.html' %}
+{% load form_tags %}
+
+{% block content %}
+<header class="my-4">
+    <h1 class="text-center">Crear Tarea</h1>
+</header>
+
+{% if error %}
+<div class="alert alert-danger" role="alert">
+    {{ error }}
+</div>
+{% endif %}
+
+<form action="/create_task/" method="POST" class="needs-validation" novalidate>
+    {% csrf_token %}
+    
+    <div class="mb-3">
+        <label for="titulo" class="form-label">Título</label>
+        {{ form.titulo|add_class:"form-control" }}
+        <div class="invalid-feedback">
+            Por favor, ingresa un título.
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label for="descripcion" class="form-label">Descripción</label>
+        {{ form.descripcion|add_class:"form-control" }}
+        <div class="invalid-feedback">
+            Por favor, ingresa una descripción.
+        </div>
+    </div>
+
+    <div class="form-check mb-3">       
+        <label for="importante" class="form-check-label">
+            {{ form.importante|add_class:"form-check-input" }} <i class="fa-solid fa-star text-warning"></i> Importante
+        </label>
+    </div>
+
+    <hr class="my-4">
+    
+    <button type="submit" class="my-2 btn btn-primary"><i class="fa-solid fa-floppy-disk"></i> Guardar</button>
+</form>
+{% endblock %}
+

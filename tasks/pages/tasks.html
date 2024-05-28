@@ -1,0 +1,50 @@
+{% extends '_base.html' %}
+{% load form_tags %}
+
+{% block content %}
+
+<div class="container mb-4">
+    <header class="my-4">
+        <h1 class="text-center"><i class="fa-solid fa-list-check"></i> Listado de Tareas</h1>
+    </header>
+
+    {% if tasks %}
+    <section aria-labelledby="task-list-heading">
+        <ul class="list-group" id="task-list">
+            {% for task in tasks %}
+            <li class="list-group-item d-flex justify-content-between align-items-start">
+                <div class="ms-2 me-auto">                      
+                    <p class="fs-5"> 
+                      <a href="{% url 'task_detail' task.id %}" class="text-decoration-none">
+                        {% if task.importante %}        
+                          <span class="fw-semibold {{task.titulo|add_conditional_complete_class:task.completada}}">
+                            <i class="fa-solid fa-star text-warning"></i> {{ task.titulo }}
+                          </span>               
+                        {% else %}                          
+                          <span class="fw-medium {{task.titulo|add_conditional_complete_class:task.completada}}">
+                            <i class="fa-solid fa-asterisk"></i> {{ task.titulo }}
+                          </span>                   
+                        {% endif %}
+                      </a>                       
+                    </p>                
+                    <p class="mb-2 fw-light">{{ task.descripcion }}</p>
+                    <time datetime="{{ task.fecha_creacion|date:'Y-m-dTH:i' }}">
+                      <i class="fa-solid fa-calendar-day"></i> {{ task.fecha_creacion|date:'M j, Y H:i' }}
+                    </time>  
+                    <span class="fw-bold">-</span>                  
+                    <span class="badge rounded-pill text-bg-success">{{ user.username }}</span>
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+    </section>
+    {% else %}
+    <section aria-labelledby="no-tasks-heading">
+        <div class="alert alert-info" role="alert" id="no-tasks-heading">
+            No tienes tareas creadas.
+            <a href="{% url 'create_task' %}" class="alert-link">Crea una nueva tarea</a>.
+        </div>
+    </section>
+    {% endif %}
+</div>
+{% endblock %}
